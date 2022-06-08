@@ -1,0 +1,14 @@
+trigger:
+- main
+
+steps:
+- task: terraformTaskV1
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+
+
+- task: terraformTaskV1
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
