@@ -1,14 +1,41 @@
-trigger:
-- main
+pool:
+  name: my pool
 
 steps:
-- task: terraformTaskV1
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+  displayName: 'Use Terraform latest'
+
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+  displayName: 'terraform init'
   inputs:
-    provider: 'azurerm'
-    command: 'init'
+    command: init
+    workingDirectory: terratest2
+    backendType: azurerm
+    backendServiceArm: 'MCT Enterprise(5ed76601-98bd-40f4-a782-fb582f6fd20d)'
+    backendAzureRmSubscriptionId: '5ed76601-98bd-40f4-a782-fb582f6fd20d'
+
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    workingDirectory: terratest2
+    environmentServiceName: 'MCT Enterprise(5ed76601-98bd-40f4-a782-fb582f6fd20d)'
+    providerAzureRmSubscriptionId: '5ed76601-98bd-40f4-a782-fb582f6fd20d'
 
 
-- task: terraformTaskV1
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+  displayName: 'terraform apply'
   inputs:
-    provider: 'azurerm'
-    command: 'apply'
+    command: apply
+    workingDirectory: terratest2
+    environmentServiceName: 'MCT Enterprise(5ed76601-98bd-40f4-a782-fb582f6fd20d)'
+    providerAzureRmSubscriptionId: '5ed76601-98bd-40f4-a782-fb582f6fd20d'
+    
+  
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+  displayName: 'terraform destroy'
+  inputs:
+    command: destroy
+    workingDirectory: terratest2
+    environmentServiceName: 'MCT Enterprise(5ed76601-98bd-40f4-a782-fb582f6fd20d)'
+    providerAzureRmSubscriptionId: '5ed76601-98bd-40f4-a782-fb582f6fd20d'
